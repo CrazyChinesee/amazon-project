@@ -92,6 +92,15 @@ cart.forEach((cartItem) => {
     </div>
   `;
 });
+let quantity = 0;
+
+cart.forEach((cartItem) => {
+  quantity += cartItem.quantity;
+});
+
+document.querySelector(
+  ".js-return-to-home-link"
+).innerHTML = `${quantity} items`;
 
 document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
 
