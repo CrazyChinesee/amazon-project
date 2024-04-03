@@ -121,6 +121,24 @@
 
 .quantity-input {
   width: 30px;
+  display: none;
+}
+
+.save-quantity-link {
+  display: none;
+}
+/*Probably bad implementation*/
+.is-editing-quantity {
+  display: initial;
+  font-size: 50;
+}
+
+.is-editing-quantity .quantity-input {
+  display: initial;
+}
+
+.is-editing-quantity .save-quantity-link {
+  display: initial;
 }
 
 @media (max-width: 1000px) {
