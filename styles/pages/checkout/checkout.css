@@ -133,6 +133,14 @@
   font-size: 50;
 }
 /*Way to change only .quantity-input that is NESTED inside .is-editing-quantity*/
+.is-editing-quantity .quantity-label {
+  display: none;
+}
+
+.is-editing-quantity .update-quantity-link {
+  display: none;
+}
+
 .is-editing-quantity .quantity-input {
   display: initial;
 }
