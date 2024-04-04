@@ -132,7 +132,7 @@
   display: initial;
   font-size: 50;
 }
-
+/*Way to change only .quantity-input that is NESTED inside .is-editing-quantity*/
 .is-editing-quantity .quantity-input {
   display: initial;
 }
