@@ -38,6 +38,18 @@ export function addToCart(productId) {
   saveToStorage();
 }
 
+export function updateCart(productId, quantity) {
+  let matchingItem;
+
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem;
+    }
+  });
+  matchingItem.quantity = quantity;
+  saveToStorage();
+}
+
 export function removeFromCart(productId) {
   const newCart = [];
 
