@@ -127,7 +127,7 @@
 .save-quantity-link {
   display: none;
 }
-/*Probably bad implementation*/
+
 .is-editing-quantity {
   display: initial;
   font-size: 50;

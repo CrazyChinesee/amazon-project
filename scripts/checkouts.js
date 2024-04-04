@@ -40,9 +40,9 @@ cart.forEach((cartItem) => {
             matchingProduct.priceCents
           )}</div>
           <div class="product-quantity">
-            <span> Quantity: <span class="quantity-label">${
-              cartItem.quantity
-            }</span> </span>
+            <span> Quantity: <span class="quantity-label js-quantity-label-${
+              matchingProduct.id
+            }">${cartItem.quantity}</span> </span>
             
             <span class="update-quantity-link link-primary js-update-link js-product-quantity-${
               matchingProduct.id
@@ -133,6 +133,8 @@ document.querySelectorAll(".js-save-quantity-link").forEach((link) => {
     );
     const inputQuantity = Number(containerInput.value); //OK
     updateCart(productId, inputQuantity);
+    updateCartQuantity();
+    updateQuantityLabel(productId, inputQuantity);
   });
 });
 
@@ -151,4 +153,9 @@ document.querySelectorAll(".js-delete-link").forEach((link) => {
 function updateCartQuantity() {
   document.querySelector(".js-return-to-home-link")
     .innerHTML = `${calculateCartQuantity()} items`;
+}
+// prettier-ignore
+function updateQuantityLabel(productId,quantity){
+  document.querySelector(`.js-quantity-label-${productId}`).innerHTML = `${quantity}`; 
+  console.log(productId);
 }
