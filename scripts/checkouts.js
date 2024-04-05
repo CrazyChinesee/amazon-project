@@ -51,7 +51,7 @@ cart.forEach((cartItem) => {
             </span>          
             <input class="quantity-input js-quantity-input js-quantity-input-${
               matchingProduct.id
-            }">
+            }" data-product-id="${matchingProduct.id}">
             <span class="save-quantity-link link-primary js-save-quantity-link" data-product-id="${
               matchingProduct.id
             }">Save</span>
@@ -126,7 +126,7 @@ document.querySelectorAll(".js-save-quantity-link").forEach((link) => {
     handleSaveQuantity(link);
   });
 });
-/*   Implementirati Enter
+//Use Enter to input quantity
 document.querySelectorAll(".js-quantity-input").forEach((input) => {
   input.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
@@ -134,7 +134,6 @@ document.querySelectorAll(".js-quantity-input").forEach((input) => {
     }
   });
 });
-*/
 document.querySelectorAll(".js-delete-link").forEach((link) => {
   link.addEventListener("click", () => {
     const productId = link.dataset.productId;
