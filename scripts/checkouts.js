@@ -49,7 +49,7 @@ cart.forEach((cartItem) => {
             }" data-product-id="${matchingProduct.id}">
               Update 
             </span>          
-            <input class="quantity-input js-quantity-input-${
+            <input class="quantity-input js-quantity-input js-quantity-input-${
               matchingProduct.id
             }">
             <span class="save-quantity-link link-primary js-save-quantity-link" data-product-id="${
@@ -123,21 +123,18 @@ document.querySelectorAll(".js-update-link").forEach((link) => {
 //Save link(When clicked saves inserted value and closes)
 document.querySelectorAll(".js-save-quantity-link").forEach((link) => {
   link.addEventListener("click", () => {
-    const productId = link.dataset.productId;
-    const container = document.querySelector(
-      `.js-cart-item-container-${productId}`
-    );
-    container.classList.remove("is-editing-quantity");
-    const containerInput = document.querySelector(
-      `.js-quantity-input-${productId}`
-    );
-    const inputQuantity = Number(containerInput.value); //OK
-    updateCart(productId, inputQuantity);
-    updateCartQuantity();
-    updateQuantityLabel(productId, inputQuantity);
+    handleSaveQuantity(link);
   });
 });
-
+/*   Implementirati Enter
+document.querySelectorAll(".js-quantity-input").forEach((input) => {
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      handleSaveQuantity(input);
+    }
+  });
+});
+*/
 document.querySelectorAll(".js-delete-link").forEach((link) => {
   link.addEventListener("click", () => {
     const productId = link.dataset.productId;
@@ -146,9 +143,33 @@ document.querySelectorAll(".js-delete-link").forEach((link) => {
     );
     container.remove();
     removeFromCart(productId);
-    updateCartQuantity();
   });
 });
+function handleSaveQuantity(link) {
+  const productId = link.dataset.productId;
+  const container = document.querySelector(
+    `.js-cart-item-container-${productId}`
+  );
+  container.classList.remove("is-editing-quantity");
+  const containerInput = document.querySelector(
+    `.js-quantity-input-${productId}`
+  );
+  const inputQuantity = Number(containerInput.value); //OK
+  //Quantity Validation
+  if (inputQuantity >= 0 && inputQuantity < 1000) {
+    if (inputQuantity === 0) {
+      container.remove();
+      removeFromCart(productId);
+      updateCartQuantity();
+    } else {
+      updateCart(productId, inputQuantity);
+      updateQuantityLabel(productId, inputQuantity);
+      updateCartQuantity();
+    }
+  }
+  containerInput.value = "";
+}
+
 // prettier-ignore
 function updateCartQuantity() {
   document.querySelector(".js-return-to-home-link")
@@ -156,6 +177,5 @@ function updateCartQuantity() {
 }
 // prettier-ignore
 function updateQuantityLabel(productId,quantity){
-  document.querySelector(`.js-quantity-label-${productId}`).innerHTML = `${quantity}`; 
-  console.log(productId);
+  document.querySelector(`.js-quantity-label-${productId}`).innerHTML = `${quantity}`;
 }
