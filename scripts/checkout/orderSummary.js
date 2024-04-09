@@ -1,16 +1,16 @@
 import {
   cart,
   removeFromCart,
-  calculateCartQuantity,
   updateCart,
   updateDeliveryOption,
 } from "../../data/cart.js";
-import { products, getProduct } from "../../data/products.js";
+import { getProduct } from "../../data/products.js";
 import formatCurrency from "../utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import {
   deliveryOptions,
   getDeliveryOption,
+  ifWeekend,
 } from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
 import { renderCheckoutHeader } from "./checkoutHeader.js";
@@ -22,21 +22,22 @@ export function renderOrderSummary() {
     const productId = cartItem.productId;
 
     const matchingProduct = getProduct(productId);
-    /*
-    products.forEach((product) => {
-      if (product.id === productId) {
-        matchingProduct = product;
-      }
-    });
-    */
+
     const deliveryOptionId = cartItem.deliveryOptionId;
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
     const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
+
+    const deliveryDateUnchecked = today.add(
+      //MVC IMPLEMENT!!! so that we dont code both places rather to use one to show other!
+      deliveryOption.deliveryDays,
+      "days"
+    );
+
+    const deliveryDate = ifWeekend(deliveryDateUnchecked);
+
     const dateString = deliveryDate.format("dddd, MMMM D");
-    console.log(deliveryOption);
 
     cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${
@@ -98,7 +99,11 @@ export function renderOrderSummary() {
 
     deliveryOptions.forEach((deliveryOption) => {
       const today = dayjs();
-      const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
+      const deliveryDateUnchecked = today.add(
+        deliveryOption.deliveryDays,
+        "days"
+      );
+      const deliveryDate = ifWeekend(deliveryDateUnchecked); //Check if its weekend
       const dateString = deliveryDate.format("dddd, MMMM D");
       const priceString =
         deliveryOption.priceCents === 0

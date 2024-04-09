@@ -26,3 +26,15 @@ export function getDeliveryOption(deliveryOptionId) {
   });
   return deliveryOption;
 }
+
+export function ifWeekend(deliveryDate) {
+  let newDeliveryDate;
+  if (deliveryDate.format("dddd") === "Saturday") {
+    newDeliveryDate = deliveryDate.add(2, "day");
+    return newDeliveryDate;
+  } else if (deliveryDate.format("dddd") === "Sunday") {
+    newDeliveryDate = deliveryDate.add(1, "day");
+    return newDeliveryDate;
+  }
+  return deliveryDate;
+}
