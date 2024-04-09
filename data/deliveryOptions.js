@@ -28,27 +28,29 @@ export function getDeliveryOption(deliveryOptionId) {
   });
   return deliveryOption;
 }
-
+//There is a bug when you place an order on weekends
 export function calculateDeliveryDate(deliveryOption) {
-  const today = dayjs();
+  const today = dayjs().add(0, "day"); //Play with todayDate
+  let requestedDays = deliveryOption.deliveryDays;
+  let counterDays = 0;
 
-  const deliveryDateUnchecked = today.add(deliveryOption.deliveryDays, "days");
+  while (requestedDays > 0) {
+    if (ifWeekend(today.add(counterDays, "day"))) {
+      counterDays++;
+    } else {
+      requestedDays--;
+      counterDays++;
+    }
+  }
 
-  const deliveryDate = ifWeekend(deliveryDateUnchecked);
+  const deliveryDate = today.add(counterDays - 1, "day");
 
   const dateString = deliveryDate.format("dddd, MMMM D");
 
   return dateString;
 }
 
-function ifWeekend(deliveryDate) {
-  let newDeliveryDate;
-  if (deliveryDate.format("dddd") === "Saturday") {
-    newDeliveryDate = deliveryDate.add(2, "day");
-    return newDeliveryDate;
-  } else if (deliveryDate.format("dddd") === "Sunday") {
-    newDeliveryDate = deliveryDate.add(1, "day");
-    return newDeliveryDate;
-  }
-  return deliveryDate;
+function ifWeekend(date) {
+  const dayOfWeek = date.format("dddd");
+  return dayOfWeek === "Saturday" || dayOfWeek === "Sunday";
 }
