@@ -186,6 +186,7 @@ export function renderOrderSummary() {
       }
     }
     containerInput.value = "";
+    renderPaymentSummary();
   }
 
   // prettier-ignore
