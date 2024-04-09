@@ -157,11 +157,9 @@ export function renderOrderSummary() {
   document.querySelectorAll(".js-delete-link").forEach((link) => {
     link.addEventListener("click", () => {
       const productId = link.dataset.productId;
-      const container = document.querySelector(
-        `.js-cart-item-container-${productId}`
-      );
-      container.remove();
+
       removeFromCart(productId);
+      renderOrderSummary();
       renderPaymentSummary();
     });
   });
