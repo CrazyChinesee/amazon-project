@@ -31,19 +31,39 @@ export function getDeliveryOption(deliveryOptionId) {
 //There is a bug when you place an order on weekends
 export function calculateDeliveryDate(deliveryOption) {
   const today = dayjs().add(0, "day"); //Play with todayDate
+  let dayInWeek = dayjs().add(0, "day");
   let requestedDays = deliveryOption.deliveryDays;
   let counterDays = 0;
 
   while (requestedDays > 0) {
-    if (ifWeekend(today.add(counterDays, "day"))) {
+    console.log(requestedDays);
+
+    if (ifWeekend(dayInWeek)) {
+      //Shouldnt add counter days every time rather set value
+
       counterDays++;
+      dayInWeek = today.add(counterDays, "day");
     } else {
       requestedDays--;
-      counterDays++;
-    }
-  }
 
-  const deliveryDate = today.add(counterDays - 1, "day");
+      counterDays++;
+      dayInWeek = today.add(counterDays, "day");
+      if (ifWeekend(dayInWeek)) {
+        //When loop ends on weekend(sat)
+        counterDays++;
+        dayInWeek = today.add(counterDays, "day");
+      }
+      if (ifWeekend(dayInWeek)) {
+        //when loops ends on weekend(sun)
+        counterDays++;
+        dayInWeek = today.add(counterDays, "day");
+      }
+    }
+    console.log(dayInWeek);
+  }
+  console.log("out");
+
+  const deliveryDate = today.add(counterDays, "day");
 
   const dateString = deliveryDate.format("dddd, MMMM D");
 
