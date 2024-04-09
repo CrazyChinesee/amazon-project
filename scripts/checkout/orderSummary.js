@@ -13,6 +13,7 @@ import {
   getDeliveryOption,
 } from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js";
 
 export function renderOrderSummary() {
   let cartSummaryHTML = "";
@@ -127,8 +128,6 @@ export function renderOrderSummary() {
     return html;
   }
 
-  updateCartQuantity();
-
   document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
   //Update link(When clicked give input and save link)
   document.querySelectorAll(".js-update-link").forEach((link) => {
@@ -154,6 +153,7 @@ export function renderOrderSummary() {
       }
     });
   });
+  //DELETE LINK EVENTLISTENER
   document.querySelectorAll(".js-delete-link").forEach((link) => {
     link.addEventListener("click", () => {
       const productId = link.dataset.productId;
@@ -161,8 +161,10 @@ export function renderOrderSummary() {
       removeFromCart(productId);
       renderOrderSummary();
       renderPaymentSummary();
+      renderCheckoutHeader();
     });
   });
+  // SAVE LINK handling
   function handleSaveQuantity(link) {
     const productId = link.dataset.productId;
     const container = document.querySelector(
@@ -178,27 +180,21 @@ export function renderOrderSummary() {
       if (inputQuantity === 0) {
         container.remove();
         removeFromCart(productId);
-        updateCartQuantity();
       } else {
         updateCart(productId, inputQuantity);
         updateQuantityLabel(productId, inputQuantity);
-        updateCartQuantity();
       }
     }
     containerInput.value = "";
     renderPaymentSummary();
-  }
-
-  // prettier-ignore
-  function updateCartQuantity() {
-    document.querySelector(".js-return-to-home-link")
-      .innerHTML = `${calculateCartQuantity()} items`;
+    renderCheckoutHeader();
   }
   // prettier-ignore
   function updateQuantityLabel(productId,quantity){
     document.querySelector(`.js-quantity-label-${productId}`).innerHTML = `${quantity}`;
   }
 
+  //PICK DELIVERY OPTION
   document.querySelectorAll(".js-delivery-option").forEach((element) => {
     element.addEventListener("click", () => {
       const { productId, deliveryOptionId } = element.dataset;
