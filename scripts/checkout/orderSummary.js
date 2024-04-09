@@ -6,11 +6,10 @@ import {
 } from "../../data/cart.js";
 import { getProduct } from "../../data/products.js";
 import formatCurrency from "../utils/money.js";
-import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import {
   deliveryOptions,
   getDeliveryOption,
-  ifWeekend,
+  calculateDeliveryDate,
 } from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
 import { renderCheckoutHeader } from "./checkoutHeader.js";
@@ -27,17 +26,7 @@ export function renderOrderSummary() {
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-    const today = dayjs();
-
-    const deliveryDateUnchecked = today.add(
-      //MVC IMPLEMENT!!! so that we dont code both places rather to use one to show other!
-      deliveryOption.deliveryDays,
-      "days"
-    );
-
-    const deliveryDate = ifWeekend(deliveryDateUnchecked);
-
-    const dateString = deliveryDate.format("dddd, MMMM D");
+    const dateString = calculateDeliveryDate(deliveryOption);
 
     cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${
@@ -98,13 +87,7 @@ export function renderOrderSummary() {
     let html = "";
 
     deliveryOptions.forEach((deliveryOption) => {
-      const today = dayjs();
-      const deliveryDateUnchecked = today.add(
-        deliveryOption.deliveryDays,
-        "days"
-      );
-      const deliveryDate = ifWeekend(deliveryDateUnchecked); //Check if its weekend
-      const dateString = deliveryDate.format("dddd, MMMM D");
+      const dateString = calculateDeliveryDate(deliveryOption);
       const priceString =
         deliveryOption.priceCents === 0
           ? "FREE"
