@@ -1,9 +1,10 @@
 import { addToCart, cart, loadFromStorage } from "../../data/cart.js";
 
 describe("test suite: addToCart", () => {
-  it("adds an existing product to the cart", () => {
+  beforeEach(() => {
     spyOn(localStorage, "setItem");
-
+  });
+  it("adds an existing product to the cart", () => {
     spyOn(localStorage, "getItem").and.callFake(() => {
       //Prevent loading from localStorage and instead load empty array
       return JSON.stringify([
@@ -34,7 +35,6 @@ describe("test suite: addToCart", () => {
   });
 
   it("adds a new product to the cart", () => {
-    spyOn(localStorage, "setItem"); //Prevent saving to localstorage(placing mock so when its called inside addToCart Function it uses Mock instead of saving to actuall localStorage
     spyOn(localStorage, "getItem").and.callFake(() => {
       //Prevent loading from localStorage and instead load empty array
       return JSON.stringify([]);
