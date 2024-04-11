@@ -187,4 +187,13 @@ describe("test suite: updateDeliveryOption", () => {
     expect(cart[1].deliveryOptionId).toEqual("2");
     expect(localStorage.setItem).toHaveBeenCalledTimes(0);
   });
+  it("Does not update if DeliveryOption is not one of 3 options", () => {
+    loadFromStorage();
+    updateDeliveryOption(productId1, "5");
+    expect(cart[0].productId).toEqual(productId1);
+    expect(cart[0].deliveryOptionId).toEqual("1");
+    expect(cart[1].productId).toEqual(productId2);
+    expect(cart[1].deliveryOptionId).toEqual("2");
+    expect(localStorage.setItem).toHaveBeenCalledTimes(0);
+  });
 });
