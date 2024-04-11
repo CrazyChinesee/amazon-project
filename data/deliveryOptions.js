@@ -36,8 +36,6 @@ export function calculateDeliveryDate(deliveryOption) {
   let counterDays = 0;
 
   while (requestedDays > 0) {
-    console.log(requestedDays);
-
     if (ifWeekend(dayInWeek)) {
       //Shouldnt add counter days every time rather set value
 
@@ -59,9 +57,7 @@ export function calculateDeliveryDate(deliveryOption) {
         dayInWeek = today.add(counterDays, "day");
       }
     }
-    console.log(dayInWeek);
   }
-  console.log("out");
 
   const deliveryDate = today.add(counterDays, "day");
 
