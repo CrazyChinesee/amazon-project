@@ -137,7 +137,7 @@ describe("test suite: removeFromCart", () => {
 describe("test suite: updateDeliveryOption", () => {
   const productId1 = "e43638ce-6aa0-4b85-b27f-e1d07eb678c6";
   const productId2 = "15b6fc6f-327a-4ec4-896f-486349e85a3d";
-  it("updatesDeliveryOption", () => {
+  beforeEach(() => {
     spyOn(localStorage, "setItem");
     spyOn(localStorage, "getItem").and.callFake(() => {
       return JSON.stringify([
@@ -153,7 +153,9 @@ describe("test suite: updateDeliveryOption", () => {
         },
       ]);
     });
-
+  });
+  it("updatesDeliveryOption", () => {
+    loadFromStorage();
     updateDeliveryOption(productId1, "3");
     expect(cart[0].productId).toEqual(productId1);
     expect(cart[0].deliveryOptionId).toEqual("3");
@@ -175,5 +177,14 @@ describe("test suite: updateDeliveryOption", () => {
         },
       ])
     );
+  });
+  it("Does not update if Id is not in the cart", () => {
+    loadFromStorage();
+    updateDeliveryOption("asdas", "5");
+    expect(cart[0].productId).toEqual(productId1);
+    expect(cart[0].deliveryOptionId).toEqual("1");
+    expect(cart[1].productId).toEqual(productId2);
+    expect(cart[1].deliveryOptionId).toEqual("2");
+    expect(localStorage.setItem).toHaveBeenCalledTimes(0);
   });
 });
